@@ -45,6 +45,10 @@ import OnboardingTutorial from '@/app/dashboard/onboarding/OnboardingTutorial';
 import Joyride from 'react-joyride';
 import AgentBuilder from '@/components/builder-nodes/AgentBuilder';
 
+interface OnboardingTutorialProps {
+  onComplete: () => void;
+}
+
 export default function BuilderPage() {
   "use client";
 
@@ -178,6 +182,7 @@ const allSidebarItems = [
   const [dropAsMetaNode, setDropAsMetaNode] = useState(false);
 
   const [toolsWindowOpen, setToolsWindowOpen] = useState(false);
+  const [currentComposioApiKey, setCurrentComposioApiKey] = useState('');
 
   // Add state for tutorial
   const [showTutorial, setShowTutorial] = useState(false);
@@ -188,7 +193,7 @@ const allSidebarItems = [
     (id: string, newData: Partial<InputNodeData | LLMNodeData | ComposioNodeData | AgentNodeData>) => {
       setNodes((nds) =>
         nds.map((node) =>
-          node.id === id ? { ...node, data: { ...node.data, ...newData } } : node
+          node.id === id ? { ...node, data: { ...node.data, ...newData, _forceRerender: Math.random() } } : node
         )
       );
     },
@@ -199,8 +204,8 @@ const allSidebarItems = [
     customInput: (props) => <InputNode {...props} data={{...props.data, onNodeDataChange: onNodeDataChange as any }} />,
     customOutput: OutputNode,
     llm: (props) => <LLMNode {...props} data={{ ...props.data, onNodeDataChange: onNodeDataChange as any}} onCopyApiKeyToAllLLMs={(apiKey) => setNodes(nds => nds.map(n => n.type === 'llm' ? { ...n, data: { ...n.data, apiKey } } : n))} />,
-    composio: (props) => <ComposioNode {...props} data={{ ...props.data, onNodeDataChange: onNodeDataChange as any }} onOpenToolsWindow={() => setToolsWindowOpen(true)} onCopyApiKeyToAllComposioNodes={(apiKey) => setNodes(nds => nds.map(n => n.type === 'composio' ? { ...n, data: { ...n.data, composioApiKey: apiKey } } : n))} />,
-    agent: (props) => <AgentNode {...props} data={{ ...props.data, onNodeDataChange: onNodeDataChange as any }} onOpenToolsWindow={() => setToolsWindowOpen(true)} onCopyApiKeyToAllAgents={(apiKey) => setNodes(nds => nds.map(n => n.type === 'agent' ? { ...n, data: { ...n.data, llmApiKey: apiKey } } : n))} />,
+    composio: (props) => <ComposioNode {...props} data={{ ...props.data, onNodeDataChange: onNodeDataChange as any }} onOpenToolsWindow={(apiKey?: string) => { setToolsWindowOpen(true); setCurrentComposioApiKey(apiKey || ''); }} onCopyApiKeyToAllComposioNodes={(apiKey) => setNodes(nds => nds.map(n => n.type === 'composio' ? { ...n, data: { ...n.data, composioApiKey: apiKey } } : n))} />,
+    agent: (props) => <AgentNode {...props} data={{ ...props.data, onNodeDataChange: onNodeDataChange as any }} onOpenToolsWindow={(apiKey?: string) => { setToolsWindowOpen(true); setCurrentComposioApiKey(apiKey || ''); }} onCopyApiKeyToAllAgents={(apiKey) => setNodes(nds => nds.map(n => n.type === 'agent' ? { ...n, data: { ...n.data, llmApiKey: apiKey } } : n))} />,
     patternMeta: PatternMetaNode,
   }), [onNodeDataChange, setNodes]);
 
@@ -1241,11 +1246,13 @@ const allSidebarItems = [
             `}</style>
           </ReactFlow>
           {toolsWindowOpen && (
-            <ToolsWindow 
-              onClose={() => setToolsWindowOpen(false)} 
-              onConnect={() => setToolsWindowOpen(false)} 
+            <ToolsWindow
+              onClose={() => setToolsWindowOpen(false)}
               onSelectTool={handleAddActionsToAgent}
-              composioApiKey={getSelectedComposioApiKey()}
+              onConnect={() => {
+                // Potentially refresh or refetch tool connections here
+              }}
+              composioApiKey={currentComposioApiKey || getSelectedComposioApiKey()}
             />
           )}
           {/* Play Button at bottom center */}
@@ -1302,6 +1309,9 @@ const allSidebarItems = [
           </div>
         </main>
       </div>
+
+      {/* Onboarding Tutorial */}
+      {showTutorial && <OnboardingTutorial onComplete={() => setShowTutorial(false)} />}
     </div>
   );
 };
