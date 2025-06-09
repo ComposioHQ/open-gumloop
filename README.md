@@ -59,6 +59,50 @@ Agent Flow is a modular, extensible agent platform inspired by modern no-code an
 3. **Open your browser:**
    Visit [http://localhost:3000](http://localhost:3000) to see the app.
 
+## Supabase Configuration
+
+This project uses Supabase for its backend services. You'll need to configure it with your Supabase project's URL and public anonymous key.
+
+1.  **Find your Supabase credentials:**
+    *   Go to your Supabase project dashboard.
+    *   Navigate to **Project Settings** > **API**.
+    *   Copy your **Project URL** and your **anon (public) key**.
+
+2.  **Set up Environment Variables:**
+    Create a `.env.local` file in the root of your project and add your credentials:
+    ```env
+    NEXT_PUBLIC_SUPABASE_URL=your_supabase_project_url
+    NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+    ```
+    Replace `your_supabase_project_url` and `your_supabase_anon_key` with the actual values from your Supabase project.
+
+    **Important:** Add `.env.local` to your `.gitignore` file to avoid committing your secrets:
+    ```gitignore
+    # .gitignore
+    .env.local
+    ```
+
+## Running with Docker
+
+You can also build and run Agent Flow using Docker.
+
+1.  **Build the Docker image:**
+    ```bash
+    docker build -t agent-flow .
+    ```
+
+2.  **Run the Docker container:**
+    ```bash
+    docker run -p 3000:3000 \
+  -e NEXT_PUBLIC_SUPABASE_URL="your_supabase_project_url" \
+  -e NEXT_PUBLIC_SUPABASE_ANON_KEY="your_supabase_anon_key" \
+  agent-flow
+```
+
+Replace `your_supabase_project_url` and `your_supabase_anon_key` with your actual Supabase credentials. You can also use an `--env-file` (e.g., `docker run -p 3000:3000 --env-file ./docker.env agent-flow`) after creating a `docker.env` file with these variables.
+    ```
+    Then, open your browser and visit [http://localhost:3000](http://localhost:3000).
+
 ## Project Structure
 
 - `app/` – Main application code (pages, api routes)
