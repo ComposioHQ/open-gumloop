@@ -60,6 +60,17 @@ Agent Flow is a modular, extensible agent platform inspired by modern no-code an
 3. **Open your browser:**
    Visit [http://localhost:3000](http://localhost:3000) to see the app.
 
+## Production Build
+
+Run the following commands to create a production build and serve it:
+
+```bash
+npm run build
+npm start
+```
+
+`npm start` serves the prebuilt Next.js application.
+
 ## Project Structure
 
 - `app/` – Main application code (pages, api routes)
