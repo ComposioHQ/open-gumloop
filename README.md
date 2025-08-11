@@ -78,7 +78,8 @@ Agent Flow is a modular, extensible agent platform inspired by modern no-code an
 - Follow the code style and use modern React/Next.js best practices
 
 ## References
-
+- [Composio Website](https://composio.dev/)
+- [Composio Repository](https://github.com/composiohq/composio)
 - Inspiration and architecture: [I Replicated Gumloop in a Weekend with Vibe Coding](https://lex.page/read/17128d4b-b703-4f6e-b5c5-16aa30b38d09)
 - [Next.js Documentation](https://nextjs.org/docs)
 - [shadcn/ui](https://ui.shadcn.com/)
