@@ -1,6 +1,6 @@
-# Agent Flow
+# Open Gumloop
 
-Agent Flow is a modular, extensible agent platform inspired by modern no-code and agent orchestration tools, built with Composio and LanggraphJS. It enables developers to rapidly build, customize, and extend AI-powered workflows using a visual node-based interface and robust API. The platform is designed for flexibility, developer experience, and seamless integration with third-party tools.
+Open Gumloop is a modular, extensible agent platform inspired by modern no-code and agent orchestration tools like Gumloop, built with Composio and LanggraphJS. It enables developers to rapidly build, customize, and extend AI-powered workflows using a visual node-based interface and robust API. The platform is designed for flexibility, developer experience, and seamless integration with third-party tools.
 
 
 ## Key Features
